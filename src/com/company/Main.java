@@ -1,28 +1,40 @@
 package com.company;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
+    public static Scanner input = new Scanner(System.in);
+    public static Random rand = new Random();
+
+    public static String currentToken = "X";
+    public static int xPos;
+    public static int yPos;
+
+    public static String[][] rows = new String[][]{{"-","-","-"},
+            {"-","-","-"},
+            {"-","-","-"}};
+
     public static void main(String[] args) {
-
-        Scanner input = new Scanner(System.in);
-
-        String[] row1 = { "-", "-", "-"};
-        String[] row2 = { "-", "-", "-"};
-        String[] row3 = { "-", "-", "-"};
-
-        String currentToken = "X";
 
         System.out.println("You are X's");
         while(true){
-            printGrid(row1, row2, row3);
-            System.out.println("Its your turn");
-            System.out.println("Whats your move? (x,y)");
-            int xPos = input.nextInt();
-            int yPos = input.nextInt();
+            printGrid();
 
-            move(row1, row2, row3, currentToken, xPos, yPos);
+            if (currentToken == "X"){
+
+                System.out.println("Its your turn");
+                getInput();
+                if (xPos == 4){
+                    break;
+                }
+            }else{
+
+                System.out.println("Computer's Turn");
+                findAiMove();
+                System.out.println("Computer's move: " + xPos + ", " + yPos);
+            }
 
             if (currentToken == "X")
                 currentToken = "O";
@@ -30,48 +42,91 @@ public class Main {
         }
     }
 
-    public static void printGrid(String[] col1, String[]col2, String[]col3){
+    public static void printGrid(){
 
-        System.out.println(col1[0] + " | " + col1[1] +" | "+ col1[2] + "\n" +
-                col2[0] + " | " + col2[1] +" | "+ col2[2] + "\n" +
-                col3[0] + " | " + col3[1] +" | "+ col3[2]);
+        for (int i=0; i<rows.length; i++){
+            for (int j=0; j<rows.length; j++){
+
+                System.out.print("|" + rows[i][j]);
+            }
+            System.out.println("|");
+        }
     }
 
-    public static void move(String[] row1, String[] row2, String[] row3, String currToken, int xPos, int yPos){
+    public static void getInput(){
 
-        if (xPos == 1){
+        System.out.println("Whats your move? (x,y)");
+        xPos = input.nextInt();
+        yPos = input.nextInt();
 
-            if (yPos == 1)
-                row3[0] = currToken;
+        findMove();
+    }
 
-            else if (yPos == 2)
-                row2[0] = currToken;
+    public static void findMove(){
 
+        if (rows[xPos - 1][yPos - 1].equalsIgnoreCase("-")) {
+            rows[xPos - 1][yPos - 1] = currentToken;
+        }else {
+            System.out.println("Invalid Move");
+            getInput();
+        }
+
+        check();
+    }
+
+    public static void findAiMove(){
+
+        xPos = rand.nextInt(3)+1;
+        yPos = rand.nextInt(3)+1;
+
+        if (rows[xPos - 1][yPos - 1].equalsIgnoreCase("-")) {
+            rows[xPos - 1][yPos - 1] = currentToken;
+        }else
+            findAiMove();
+
+        check();
+    }
+
+    public static void check(){
+
+        for (int i=0; i<rows.length; i++) {
+            if (rows[i][0] == currentToken && rows[i][1] == currentToken && rows[i][2] == currentToken) {
+
+                if (currentToken == "X")
+                    System.out.println("You Win");
+                else
+                    System.out.println("Computer Wins");
+                printGrid();
+                System.exit(1);
+            }
+            if (rows[0][i] == currentToken && rows[1][i] == currentToken && rows[2][i] == currentToken) {
+
+                if (currentToken == "X")
+                    System.out.println("You Win");
+                else
+                    System.out.println("Computer Wins");
+                printGrid();
+                System.exit(1);
+            }
+        }
+
+        if (rows[0][0] == currentToken && rows[1][1] == currentToken && rows[2][2] == currentToken){
+
+            if (currentToken == "X")
+                System.out.println("You Win");
             else
-                row1[0] = currToken;
+                System.out.println("Computer Wins");
+            printGrid();
+            System.exit(1);
+        }
+        if (rows[0][2] == currentToken && rows[1][1] == currentToken && rows[2][0] == currentToken){
 
-        } else if (xPos == 2){
-
-            if (yPos == 1)
-                row3[1] = currToken;
-
-            else if (yPos == 2)
-                row2[1] = currToken;
-
+            if (currentToken == "X")
+                System.out.println("You Win");
             else
-                row1[1] = currToken;
-
-        } else if (xPos == 3){
-
-            if (yPos == 1)
-                row3[2] = currToken;
-
-            else if (yPos == 2)
-                row2[2] = currToken;
-
-            else
-                row1[2] = currToken;
-
+                System.out.println("Computer Wins");
+            printGrid();
+            System.exit(1);
         }
     }
 }
