@@ -83,43 +83,90 @@ public class Main {
 
     private static void findAiMove(){
         String temp = null;
+        boolean foundMove = false;
         for(int i=0; i<board.length;i++){
 
             temp = board[i][0]+board[i][1]+board[i][2];
-            //rows
-            if (temp.indexOf("XX") == 0 && temp.indexOf("O") != 2){
+
+            //check if winning row
+            if(temp.indexOf("OO") == 0 && !foundMove){
                 row = i;
                 col = 2;
+                foundMove = true;
                 break;
-            }else if (temp.indexOf("XX") == 1 && temp.indexOf("O") != 0){
+            }else if (temp.indexOf("OO") == 1 && !foundMove){
                 row = i;
                 col = 0;
+                foundMove = true;
                 break;
-            }else if (temp.indexOf("X-X") == 0 && temp.indexOf("O") != 1){
+            }else if (temp.indexOf("O-O") == 0 && !foundMove){
                 row = i;
                 col = 1;
+                foundMove = true;
+                break;
+            }
+            System.out.println(foundMove);
+            //check for winning col
+            temp = board[0][i]+board[1][i]+board[2][i];
+            System.out.println(temp);
+            if(temp.indexOf("OO") == 0 && !foundMove){
+                row = 2;
+                col = i;
+                foundMove = true;
+                break;
+            }else if (temp.indexOf("OO") == 1 && !foundMove){
+                row = 0;
+                col = i;
+                foundMove = true;
+                break;
+            }else if (temp.indexOf("O-O") == 0 && !foundMove){
+                row = 1;
+                col = i;
+                foundMove = true;
                 break;
             }
 
-            //cols
+            temp = board[i][0]+board[i][1]+board[i][2];
+            //row
+            if (temp.indexOf("XX") == 0 && temp.indexOf("O") != 2 && !foundMove){
+                row = i;
+                col = 2;
+                foundMove = true;
+                break;
+            }else if (temp.indexOf("XX") == 1 && temp.indexOf("O") != 0 && !foundMove){
+                row = i;
+                col = 0;
+                foundMove = true;
+                break;
+            }else if (temp.indexOf("X-X") == 0 && temp.indexOf("O") != 1 && !foundMove){
+                row = i;
+                col = 1;
+                foundMove = true;
+                break;
+            }
+
+
             temp = board[0][i]+board[1][i]+board[2][i];
-            System.out.println(temp);
-            if (temp.indexOf("XX") == 0 && temp.indexOf("O") != 2){
+            //col
+            if (temp.indexOf("XX") == 0 && temp.indexOf("O") != 2 && !foundMove){
                 row = 2;
                 col = i;
+                foundMove = true;
                 break;
-            }else if (temp.indexOf("XX") == 1 && temp.indexOf("O") != 0){
+            }else if (temp.indexOf("XX") == 1 && temp.indexOf("O") != 0 && !foundMove){
                 row = 0;
                 col = i;
+                foundMove = true;
                 break;
-            }else if (temp.indexOf("X-X") == 0 && temp.indexOf("O") != 1){
+            }else if (temp.indexOf("X-X") == 0 && temp.indexOf("O") != 1 && !foundMove){
                 row = 1;
                 col = i;
+                foundMove = true;
                 break;
             }
         }
 
-        if (!temp.contains("XX") && !temp.contains("X-X")){
+        if (!temp.contains("XX") && !temp.contains("X-X") && !foundMove){
             row = rand.nextInt(3);
             col = rand.nextInt(3);
         }
@@ -130,6 +177,69 @@ public class Main {
             findAiMove();
 
         check();
+    }
+
+    private static void winMove(){
+
+        //check if winning row
+        /*if(){
+            row = ;
+            col = 2;
+            break;
+        }else if (){
+            row = i
+            col = 0;
+            break;
+        }else if (){
+            row = i;
+            col = 1;
+            break;
+        }
+        //check for winning col
+        if(){
+            row = 2;
+            col = i;
+            break;
+        }else if (){
+            row = 0;
+            col = i;
+            break;
+        }else if (){
+            row = 1;
+            col = i;
+            break;
+        }
+
+        //row
+        if (){
+            row = ;
+            col = 2;
+            break;
+        }else if (){
+            row = ;
+            col = 0;
+            break;
+        }else if (){
+            row = ;
+            col = 1;
+            break;
+        }
+
+        //col
+        if (){
+            row = 2;
+            col = ;
+            break;
+        }else if (){
+            row = 0;
+            col = ;
+            break;
+        }else if (){
+            row = 1;
+            col = ;
+            break;
+        }
+    }*/
     }
 
     private static void check(){
